@@ -1,0 +1,21 @@
+2020.12.02 17:25:25 INFO  Started: Metals version 0.9.7 in workspace 'C:\Users\DGM\Dropbox\Proyectos VSCode\Rust Projects\advent-code' for client vscode.
+2020.12.02 17:25:27 INFO  time: initialize in 2.66s
+2020.12.02 17:25:33 WARN  Build server is not auto-connectable.
+2020.12.02 17:25:33 WARN  no build tool detected in workspace 'C:\Users\DGM\Dropbox\Proyectos VSCode\Rust Projects\advent-code'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+dic. 02, 2020 6:10:04 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:10:06 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:10:10 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:10:11 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:17:47 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:17:48 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:17:48 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+dic. 02, 2020 6:17:48 P. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+2020.12.02 18:42:47 INFO  shutting down Metals
