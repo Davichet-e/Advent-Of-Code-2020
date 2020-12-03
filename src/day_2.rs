@@ -1,11 +1,12 @@
 use std::fs::File;
 use std::io::{self, prelude::BufRead, BufReader};
+#[allow(dead_code)]
 pub fn day_2() -> io::Result<()> {
-    let file = File::open("input2")?;
+    let file = File::open("inputs/day_2")?;
     let reader = BufReader::new(file);
     let lines: Vec<String> = reader.lines().filter_map(|l| l.ok()).collect();
     println!(
-        "Day 2\npart 1: {:?}\npart 2: {:?}",
+        "Day 2\npart 1: {:?}\npart 2: {:?}\n",
         lines
             .iter()
             .filter(|line| Password::from_text(line).is_valid_part_1())

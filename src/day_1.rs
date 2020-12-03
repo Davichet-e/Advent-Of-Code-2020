@@ -1,8 +1,10 @@
+#[allow(dead_code)]
 use itertools::Itertools;
 use std::fs::File;
 use std::io::{self, prelude::BufRead, BufReader};
+#[allow(dead_code)]
 pub fn day_1() -> io::Result<()> {
-    let file = File::open("input")?;
+    let file = File::open("inputs/day_1")?;
     let reader = BufReader::new(file);
     let numbers: Vec<u32> = reader
         .lines()
@@ -17,7 +19,7 @@ pub fn day_1() -> io::Result<()> {
             .map_or(0, |(a, b)| a * b)
     );
     println!(
-        "part 2: {}",
+        "part 2: {}\n",
         numbers
             .iter()
             .tuple_combinations::<(_, _, _)>()
