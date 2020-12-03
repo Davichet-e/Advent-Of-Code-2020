@@ -8,46 +8,32 @@ pub fn day_3() -> io::Result<()> {
         .lines()
         .filter_map(|l| l.ok())
         .collect::<Vec<String>>();
-
+    let mut x1 = count_trees(3, 1, board);
     // Part 1
-    println!(
-        "Day 3\nPart 1: {}",
-        count_trees(&mut [0], &mut vec![3], board)
-    );
+    println!("Day 3\nPart 1: {}", x1);
+
+    x1 *= count_trees(1, 1, board);
+    x1 *= count_trees(5, 1, board);
+    x1 *= count_trees(7, 1, board);
+    x1 *= count_trees(1, 2, board);
 
     //Part 2
-    println!(
-        "Part 2: {}\n",
-        count_trees(&mut [0; 5], &mut vec![1, 3, 5, 7, 1], board)
-    );
+    println!("Part 2: {}\n", x1);
     Ok(())
 }
 
-fn count_trees(acc: &mut [u32], x: &mut Vec<usize>, board: &[String]) -> u64 {
+fn count_trees(x: usize, y: usize, board: &[String]) -> u64 {
     let str_length = board[0].len();
-    let x_ = x.clone();
-    let a = (1..board.len()).fold((acc, x, x_), |state, y| {
-        for (i, (acc, x)) in state.0.into_iter().zip(state.1.into_iter()).enumerate() {
-            if board[match y + 1 {
-                _ if i != 4 => y,
-                value if value % 2 == 1 || value == board.len() => break,
-                value => value,
-            }]
-            .chars()
-            .nth((*x) % str_length)
-            .unwrap()
-                == '#'
-            {
-                *acc += 1;
-            }
-            *x += state.2[i];
-        }
+    (1..board.len())
+        .step_by(y)
+        .fold((0, x), |mut state, y| {
+            state = if board[y].chars().nth(state.1 % str_length).unwrap() == '#' {
+                (state.0 + 1, state.1 + x)
+            } else {
+                (state.0, state.1 + x)
+            };
 
-        state
-    });
-
-    a.0.iter().fold(1, |mut acc, n| {
-        acc *= *n as u64;
-        acc
-    })
+            state
+        })
+        .0
 }
