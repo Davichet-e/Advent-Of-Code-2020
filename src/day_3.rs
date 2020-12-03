@@ -24,16 +24,15 @@ pub fn day_3() -> io::Result<()> {
 
 fn count_trees(x: usize, y: usize, board: &[String]) -> u64 {
     let str_length = board[0].len();
-    (1..board.len())
+    board
+        .iter()
         .step_by(y)
-        .fold((0, x), |mut state, y| {
-            state = if board[y].chars().nth(state.1 % str_length).unwrap() == '#' {
+        .fold((0, x), |state, line| {
+            if line.chars().nth(state.1 % str_length).unwrap() == '#' {
                 (state.0 + 1, state.1 + x)
             } else {
                 (state.0, state.1 + x)
-            };
-
-            state
+            }
         })
         .0
 }
