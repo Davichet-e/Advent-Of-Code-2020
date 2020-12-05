@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::fs::File;
 use std::io::{self, prelude::BufRead, BufReader};
 
@@ -9,41 +10,19 @@ struct Seat {
 
 impl Seat {
     fn new(string: &str) -> Self {
-        let ((row, _), (column, _)): ((i8, i8), (i8, i8)) = string.chars().fold(
-            ((0, 127), (0, 7)),
-            |((min_row, max_row), (min_col, max_col)), c| match c {
-                'F' => (
-                    (
-                        min_row,
-                        max_row - ((max_row as f32 - min_row as f32) / 2.0).trunc() as i8,
-                    ),
-                    (min_col, max_col),
-                ),
-                'B' => (
-                    (
-                        min_row + ((max_row as f32 - min_row as f32) as f32 / 2.0).ceil() as i8,
-                        max_row,
-                    ),
-                    (min_col, max_col),
-                ),
-                'L' => (
-                    (min_row, max_row),
-                    (
-                        min_col,
-                        max_col - ((max_col as f32 - min_col as f32) / 2.0).trunc() as i8,
-                    ),
-                ),
-                'R' => (
-                    (min_row, max_row),
-                    (
-                        min_col + ((max_col as f32 - min_col as f32) as f32 / 2.0).ceil() as i8,
-                        max_col,
-                    ),
-                ),
-                _ => unreachable!(),
-            },
-        );
-        Seat { column, row }
+        lazy_static! {
+            static ref ZEROS_RE: Regex = Regex::new("[FL]").unwrap();
+            static ref ONES_RE: Regex = Regex::new("[BR]").unwrap();
+        }
+        let seat = isize::from_str_radix(
+            &*ZEROS_RE.replace_all(&*ONES_RE.replace_all(string, "1"), "0"),
+            2,
+        )
+        .unwrap() as i16;
+        Seat {
+            column: (seat as i16 & 7) as i8,
+            row: (seat as i16 >> 3) as i8,
+        }
     }
 
     fn id(self) -> u16 {
@@ -51,20 +30,14 @@ impl Seat {
     }
 }
 
-fn not_consecutive_items(list: &[u16]) -> Vec<u16> {
-    let mut first: usize = 0;
-    let last: usize = list.len();
-    let mut not_sorted = Vec::new();
-
-    let mut next: usize = first + 1;
-    while next != last {
-        if list[next] - list[first] != 1 {
-            not_sorted.push(list[first] + 1);
-        };
-        first += 1;
-        next += 1;
-    }
-    not_sorted
+fn not_consecutive_items(list: &[u16]) -> u16 {
+    list.iter()
+        .take(list.len() - 1)
+        .zip(list.iter().skip(1))
+        .find(|(&l, &u)| u == (l + 2))
+        .unwrap()
+        .0
+        + 1
 }
 
 #[allow(dead_code)]
@@ -81,8 +54,8 @@ pub fn day_5() -> io::Result<()> {
     println!("Day 5\nPart 1: {:?}", ids.last().unwrap());
 
     // Part 2
-    let ids_not_consecutive = not_consecutive_items(&ids);
-    println!("Part 2: {:?}\n", ids_not_consecutive[0]);
+    let my_id = not_consecutive_items(&ids);
+    println!("Part 2: {:?}\n", my_id);
 
     Ok(())
 }
