@@ -61,6 +61,8 @@ fn validate_field(field: (&str, &str)) -> bool {
         _ => unreachable!(),
     }
 }
+
+#[allow(dead_code)]
 pub fn day_4() -> io::Result<()> {
     let mut file = File::open("inputs/day_4")?;
     let mut content = String::default();
@@ -82,11 +84,11 @@ fn check_passports(captures: &[Captures], validations: bool) -> u16 {
                 .into_iter()
                 .collect();
     }
-    let a = captures
+    captures
         .iter()
         .fold((0, Passport::default()), |(mut acc, mut passport), cap| {
             let c = String::from(&cap[2]);
-            passport.fields.insert(c.clone(), String::from(&cap[3]));
+            passport.fields.insert(c, String::from(&cap[3]));
 
             if cap.get(4).is_some() {
                 if FIELDS.is_subset(
@@ -107,6 +109,5 @@ fn check_passports(captures: &[Captures], validations: bool) -> u16 {
             }
             (acc, passport)
         })
-        .0;
-    a
+        .0
 }

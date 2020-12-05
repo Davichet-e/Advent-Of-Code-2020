@@ -1,7 +1,7 @@
-#[allow(dead_code)]
 use itertools::Itertools;
 use std::fs::File;
 use std::io::{self, prelude::BufRead, BufReader};
+
 #[allow(dead_code)]
 pub fn day_1() -> io::Result<()> {
     let file = File::open("inputs/day_1")?;
