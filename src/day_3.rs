@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{self, prelude::BufRead, BufReader};
 
+#[allow(dead_code)]
 pub fn day_3() -> io::Result<()> {
     let file = File::open("inputs/day_3")?;
     let reader = BufReader::new(file);
