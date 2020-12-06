@@ -1,3 +1,4 @@
+use lazy_static::lazy_static;
 use regex::{Captures, Regex};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -6,10 +7,13 @@ use std::io::{self, Read};
 #[allow(dead_code)]
 pub fn day_4() -> io::Result<()> {
     let mut file = File::open("inputs/day_4")?;
+
     let mut content = String::default();
-    let re = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
     file.read_to_string(&mut content)?;
+
+    let re = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
     let captures: Vec<Captures> = re.captures_iter(&content).collect();
+
     // Part 1
     println!("Day 4\nPart 1: {}", check_passports(&captures, false));
 
@@ -20,8 +24,8 @@ pub fn day_4() -> io::Result<()> {
 }
 
 #[derive(Default)]
-struct Passport {
-    fields: HashMap<String, String>,
+struct Passport<'a> {
+    fields: HashMap<&'a str, &'a str>,
 }
 
 fn validate_number(min: u16, max: u16, number: &str) -> bool {
@@ -89,21 +93,15 @@ fn check_passports(captures: &[Captures], validations: bool) -> u16 {
     captures
         .iter()
         .fold((0, Passport::default()), |(mut acc, mut passport), cap| {
-            let c = String::from(&cap[2]);
-            passport.fields.insert(c, String::from(&cap[3]));
+            passport.fields.insert(&cap[2], &cap[3]);
 
             if cap.get(4).is_some() {
-                if FIELDS.is_subset(
-                    &passport
-                        .fields
-                        .keys()
-                        .map(|r| &r[..])
-                        .collect::<HashSet<&str>>(),
-                ) && (!validations
-                    || passport
-                        .fields
-                        .iter()
-                        .all(|(key, value)| validate_field((&key, &value))))
+                if FIELDS.is_subset(&passport.fields.keys().map(|&s| s).collect())
+                    && (!validations
+                        || passport
+                            .fields
+                            .iter()
+                            .all(|(key, value)| validate_field((key, value))))
                 {
                     acc += 1;
                 }

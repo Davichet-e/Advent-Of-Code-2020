@@ -9,8 +9,10 @@ pub fn day_6() -> io::Result<()> {
 
     file.read_to_string(&mut content)?;
 
+    // Part 1
     println!("Day 6\nPart 1: {}", part_1(&content));
 
+    // Part 2
     println!("Part 2: {}\n", part_2(&content));
     Ok(())
 }
@@ -19,7 +21,7 @@ fn part_1(content: &str) -> usize {
     content
         .split("\n\n")
         .map(|s| {
-            let set = s.chars().collect::<HashSet<_>>();
+            let set: HashSet<char> = s.chars().collect();
             if set.contains(&'\n') {
                 set.len() - 1
             } else {

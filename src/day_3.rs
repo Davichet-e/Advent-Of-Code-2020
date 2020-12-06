@@ -5,18 +5,17 @@ use std::io::{self, prelude::BufRead, BufReader};
 pub fn day_3() -> io::Result<()> {
     let file = File::open("inputs/day_3")?;
     let reader = BufReader::new(file);
-    let board: &[String] = &reader
-        .lines()
-        .filter_map(|l| l.ok())
-        .collect::<Vec<String>>();
-    let mut x1 = count_trees(3, 1, board);
+    let board: Vec<String> = reader.lines().filter_map(|l| l.ok()).collect();
+
+    let mut x1 = count_trees(3, 1, &board);
+
     // Part 1
     println!("Day 3\nPart 1: {}", x1);
 
-    x1 *= count_trees(1, 1, board);
-    x1 *= count_trees(5, 1, board);
-    x1 *= count_trees(7, 1, board);
-    x1 *= count_trees(1, 2, board);
+    x1 *= count_trees(1, 1, &board);
+    x1 *= count_trees(5, 1, &board);
+    x1 *= count_trees(7, 1, &board);
+    x1 *= count_trees(1, 2, &board);
 
     //Part 2
     println!("Part 2: {}\n", x1);

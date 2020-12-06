@@ -1,3 +1,4 @@
+use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashSet;
 use std::fs::File;
@@ -7,17 +8,17 @@ use std::io::{self, prelude::BufRead, BufReader};
 pub fn day_5() -> io::Result<()> {
     let file = File::open("inputs/day_5")?;
     let reader = BufReader::new(file);
-    let mut ids = reader
+    let mut ids: Vec<u16> = reader
         .lines()
         .map(|l| Seat::new(&l.unwrap()).id())
-        .collect::<Vec<u16>>();
+        .collect();
     ids.sort();
 
     // Part 1
     println!("Day 5\nPart 1: {:?}", ids.last().unwrap());
 
     // Part 2
-    let my_id = find_id(&mut ids);
+    let my_id = find_id(&ids);
     println!("Part 2: {:?}\n", my_id);
 
     Ok(())

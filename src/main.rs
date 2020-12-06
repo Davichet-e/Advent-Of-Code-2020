@@ -1,5 +1,3 @@
-#[macro_use]
-extern crate lazy_static;
 mod day_1;
 mod day_2;
 mod day_3;

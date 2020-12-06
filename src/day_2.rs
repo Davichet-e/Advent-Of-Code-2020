@@ -6,12 +6,19 @@ pub fn day_2() -> io::Result<()> {
     let file = File::open("inputs/day_2")?;
     let reader = BufReader::new(file);
     let lines: Vec<String> = reader.lines().filter_map(|l| l.ok()).collect();
+
+    // Part 1
     println!(
-        "Day 2\npart 1: {:?}\npart 2: {:?}\n",
+        "Day 2\npart 1: {}",
         lines
             .iter()
             .filter(|line| Password::from_text(line).is_valid_part_1())
             .count(),
+    );
+
+    // Part 2
+    println!(
+        "part 2: {}\n",
         lines
             .iter()
             .filter(|line| Password::from_text(line).is_valid_part_2())
@@ -32,10 +39,7 @@ impl<'a> Password<'a> {
 
         let split: Vec<&str> = text_split[0].split(' ').collect();
         let letter = split[1].chars().next().unwrap();
-        let numbers: Vec<usize> = split[0]
-            .split('-')
-            .filter_map(|n| n.parse::<usize>().ok())
-            .collect();
+        let numbers: Vec<usize> = split[0].split('-').filter_map(|n| n.parse().ok()).collect();
         let min_max = (numbers[0], numbers[1]);
         let password = text_split[1];
 
