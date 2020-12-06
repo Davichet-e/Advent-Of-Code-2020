@@ -3,7 +3,23 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, Read};
 
-#[derive(Default, Debug)]
+#[allow(dead_code)]
+pub fn day_4() -> io::Result<()> {
+    let mut file = File::open("inputs/day_4")?;
+    let mut content = String::default();
+    let re = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
+    file.read_to_string(&mut content)?;
+    let captures: Vec<Captures> = re.captures_iter(&content).collect();
+    // Part 1
+    println!("Day 4\nPart 1: {}", check_passports(&captures, false));
+
+    // Part 2
+    println!("Part 2: {}\n", check_passports(&captures, true));
+
+    Ok(())
+}
+
+#[derive(Default)]
 struct Passport {
     fields: HashMap<String, String>,
 }
@@ -15,6 +31,7 @@ fn validate_number(min: u16, max: u16, number: &str) -> bool {
         _ => false,
     }
 }
+
 fn validate_field(field: (&str, &str)) -> bool {
     let value: &str = field.1;
     match field.0 {
@@ -62,21 +79,6 @@ fn validate_field(field: (&str, &str)) -> bool {
     }
 }
 
-#[allow(dead_code)]
-pub fn day_4() -> io::Result<()> {
-    let mut file = File::open("inputs/day_4")?;
-    let mut content = String::default();
-    let re = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
-    file.read_to_string(&mut content)?;
-    let captures: Vec<Captures> = re.captures_iter(&content).collect();
-    // Part 1
-    println!("Day 4\nPart 1: {}", check_passports(&captures, false));
-
-    // Part 2
-    println!("Part 2: {}\n", check_passports(&captures, true));
-
-    Ok(())
-}
 fn check_passports(captures: &[Captures], validations: bool) -> u16 {
     lazy_static! {
         static ref FIELDS: HashSet<&'static str> =
