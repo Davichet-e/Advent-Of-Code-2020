@@ -1,15 +1,11 @@
 use lazy_static::lazy_static;
 use regex::{Captures, Regex};
 use std::collections::{HashMap, HashSet};
-use std::fs::File;
-use std::io::{self, Read};
+use std::{fs, io};
 
 #[allow(dead_code)]
 pub fn day_4() -> io::Result<()> {
-    let mut file = File::open("inputs/day_4")?;
-
-    let mut content = String::default();
-    file.read_to_string(&mut content)?;
+    let content = fs::read_to_string("inputs/day_4")?;
 
     let re = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
     let captures: Vec<Captures> = re.captures_iter(&content).collect();
@@ -96,7 +92,7 @@ fn check_passports(captures: &[Captures], validations: bool) -> u16 {
             passport.fields.insert(&cap[2], &cap[3]);
 
             if cap.get(4).is_some() {
-                if FIELDS.is_subset(&passport.fields.keys().map(|&s| s).collect())
+                if FIELDS.is_subset(&passport.fields.keys().copied().collect())
                     && (!validations
                         || passport
                             .fields

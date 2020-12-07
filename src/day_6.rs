@@ -1,13 +1,9 @@
 use std::collections::HashSet;
-use std::fs::File;
-use std::io::{self, Read};
+use std::{fs, io};
 
 #[allow(dead_code)]
 pub fn day_6() -> io::Result<()> {
-    let mut file = File::open("inputs/day_6")?;
-    let mut content = String::new();
-
-    file.read_to_string(&mut content)?;
+    let content = fs::read_to_string("inputs/day_4")?;
 
     // Part 1
     println!("Day 6\nPart 1: {}", part_1(&content));
@@ -40,8 +36,8 @@ fn part_2(content: &str) -> usize {
             split
                 .fold(first_element, |acc_set, string| {
                     acc_set
-                        .intersection(&string.chars().collect::<HashSet<_>>())
-                        .cloned()
+                        .intersection(&string.chars().collect::<HashSet<char>>())
+                        .copied()
                         .collect()
                 })
                 .len()

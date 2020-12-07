@@ -20,8 +20,8 @@ pub fn day_7() -> io::Result<()> {
     Ok(())
 }
 
-fn part_1<'a>(bags: &HashSet<String>, lines: &'a [String]) -> Option<HashSet<String>> {
-    let a: HashSet<String> = lines
+fn part_1(bags: &HashSet<String>, lines: &[String]) -> Option<HashSet<String>> {
+    let bags_containing_bags: HashSet<String> = lines
         .iter()
         .filter_map(|l| {
             for bag in bags {
@@ -40,16 +40,13 @@ fn part_1<'a>(bags: &HashSet<String>, lines: &'a [String]) -> Option<HashSet<Str
             None
         })
         .collect();
-    if a.is_empty() {
+    if bags_containing_bags.is_empty() {
         None
+    // Check if next level (if bags are contained by others bags)
+    } else if let Some(bags) = part_1(&bags_containing_bags, lines) {
+        Some(bags_containing_bags.union(&bags).cloned().collect())
     } else {
-        match part_1(&a, lines) {
-            Some(mut bags) => {
-                bags.extend(a.clone());
-                Some(bags)
-            }
-            _ => Some(a),
-        }
+        Some(bags_containing_bags)
     }
 }
 
@@ -71,10 +68,7 @@ fn requirements(text: &str) -> Vec<(u16, String)> {
 
 fn part_2(bag: &str, lines: &[String]) -> u16 {
     let requirements = requirements(
-        match lines
-            .iter()
-            .find(|l| l.split(" bags").find(|s| s == &bag).is_some())
-        {
+        match lines.iter().find(|l| l.split(" bags").any(|s| s == bag)) {
             Some(v) => v,
             None => return 0,
         },

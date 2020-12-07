@@ -55,7 +55,7 @@ fn find_id(list: &[u16]) -> u16 {
     // list should be sorted
     *(1..*list.last().unwrap())
         .collect::<HashSet<u16>>()
-        .difference(&list.iter().cloned().collect())
+        .difference(&list.iter().copied().collect())
         .next()
         .unwrap()
 }
