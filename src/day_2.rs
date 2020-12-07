@@ -5,7 +5,7 @@ use std::io::{self, prelude::BufRead, BufReader};
 pub fn day_2() -> io::Result<()> {
     let file = File::open("inputs/day_2")?;
     let reader = BufReader::new(file);
-    let lines: Vec<String> = reader.lines().filter_map(|l| l.ok()).collect();
+    let lines: Vec<String> = reader.lines().map(|l| l.unwrap()).collect();
 
     // Part 1
     println!(

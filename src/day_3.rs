@@ -5,7 +5,7 @@ use std::io::{self, prelude::BufRead, BufReader};
 pub fn day_3() -> io::Result<()> {
     let file = File::open("inputs/day_3")?;
     let reader = BufReader::new(file);
-    let board: Vec<String> = reader.lines().filter_map(|l| l.ok()).collect();
+    let board: Vec<String> = reader.lines().map(|l| l.unwrap()).collect();
 
     let mut x1 = count_trees(3, 1, &board);
 

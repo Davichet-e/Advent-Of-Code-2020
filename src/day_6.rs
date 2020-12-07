@@ -5,7 +5,7 @@ use std::io::{self, Read};
 #[allow(dead_code)]
 pub fn day_6() -> io::Result<()> {
     let mut file = File::open("inputs/day_6")?;
-    let mut content = String::default();
+    let mut content = String::new();
 
     file.read_to_string(&mut content)?;
 
