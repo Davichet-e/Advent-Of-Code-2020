@@ -7,8 +7,10 @@ use std::{fs, io};
 pub fn day_4() -> io::Result<()> {
     let content = fs::read_to_string("inputs/day_4")?;
 
-    let re = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
-    let captures: Vec<Captures> = re.captures_iter(&content).collect();
+    lazy_static! {
+        static ref RE: Regex = Regex::new(r"((\S+):(\S+)(\n\n|\n$)?)").unwrap();
+    }
+    let captures: Vec<Captures> = RE.captures_iter(&content).collect();
 
     // Part 1
     println!("Day 4\nPart 1: {}", check_passports(&captures, false));
