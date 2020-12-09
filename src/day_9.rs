@@ -23,17 +23,12 @@ pub fn day_9() -> io::Result<()> {
 }
 
 fn part_1(numbers: &[u64]) -> Option<&u64> {
-    let mut prev: VecDeque<&u64> = VecDeque::with_capacity(25);
-    numbers.iter().find(|&n| {
-        if prev.len() == 25 {
-            let found = prev.iter().tuple_combinations().all(|(&x, &y)| x + y != *n);
-            prev.pop_front();
-            prev.push_back(n);
-            found
-        } else {
-            prev.push_back(n);
-            false
-        }
+    let mut prev: VecDeque<&u64> = numbers.iter().take(25).collect();
+    numbers.iter().skip(25).find(|&n| {
+        let found = prev.iter().tuple_combinations().all(|(&x, &y)| x + y != *n);
+        prev.pop_front();
+        prev.push_back(n);
+        found
     })
 }
 
