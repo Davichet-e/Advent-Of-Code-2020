@@ -29,35 +29,24 @@ enum Instruction {
     JMP(i64),
 }
 
+fn parse_instruction(text: &str, type_ins: &str) -> Result<Instruction, String> {
+    if let Ok(n) = text.parse() {
+        Ok(match type_ins {
+            "jmp" => Instruction::JMP(n),
+            "acc" => Instruction::ACC(n),
+            "nop" => Instruction::NOP(n),
+            _ => panic!("Invalid instruction"),
+        })
+    } else {
+        Err("Error parsing the instruction".into())
+    }
+}
 impl FromStr for Instruction {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let split: Vec<&str> = s.split_whitespace().collect();
-        match split[0] {
-            "jmp" => {
-                if let Ok(n) = split[1].parse::<i64>() {
-                    Ok(Instruction::JMP(n))
-                } else {
-                    Err("Error parsing the instruction".into())
-                }
-            }
-            "acc" => {
-                if let Ok(n) = split[1].parse::<i64>() {
-                    Ok(Instruction::ACC(n))
-                } else {
-                    Err("Error parsing the instruction".into())
-                }
-            }
-            "nop" => {
-                if let Ok(n) = split[1].parse::<i64>() {
-                    Ok(Instruction::NOP(n))
-                } else {
-                    Err("Error parsing the instruction".into())
-                }
-            }
-            _ => Err("Error parsing the instruction".into()),
-        }
+        parse_instruction(split[1], split[0])
     }
 }
 

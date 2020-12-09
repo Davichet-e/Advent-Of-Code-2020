@@ -2,3 +2,4 @@
 .vscode
 .metals
 inputs
+create_day_aoc.py
