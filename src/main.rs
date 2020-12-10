@@ -1,4 +1,5 @@
 mod day_1;
+mod day_10;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -29,6 +30,7 @@ fn main() -> std::io::Result<()> {
             day_7::day_7()?;
             day_8::day_8()?;
             day_9::day_9()?;
+            day_10::day_10()?;
         }
     };
     Ok(())
@@ -38,7 +40,7 @@ fn create_day_aoc(type_file: &str) -> std::io::Result<()> {
     use std::fs;
     use std::io::Write;
 
-    let day: &str = &format!("day_{}", fs::read_dir("./src").unwrap().count().to_string());
+    let day: &str = &format!("day_{}", fs::read_dir("./src").unwrap().count());
     let mut file = fs::OpenOptions::new()
         .write(true)
         .create(true)
