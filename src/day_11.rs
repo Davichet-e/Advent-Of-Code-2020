@@ -61,7 +61,7 @@ pub fn day_11() -> io::Result<()> {
             if is_overflow(acc) {
                 break true;
             } else {
-                match matrix[index as usize] {
+                match matrix[acc as usize] {
                     Seat::FREE => break true,
                     Seat::OCCUPIED => break false,
                     Seat::ENDLINE => break true,
