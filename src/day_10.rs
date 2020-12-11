@@ -17,13 +17,19 @@ pub fn day_10() -> io::Result<()> {
         numbers
     };
 
+    // Part 1
     println!("Day 10\nPart 1: {}", part_1(numbers));
-    let a = &mut HashMap::new();
+
+    // Part 2
     println!(
         "Part 2: {:?}\n",
-        part_2(&numbers.iter().collect(), 0, *numbers.last().unwrap(), a)
+        part_2(
+            &numbers.iter().collect(),
+            0,
+            *numbers.last().unwrap(),
+            &mut HashMap::new()
+        )
     );
-    println!("{:?}", a);
     Ok(())
 }
 

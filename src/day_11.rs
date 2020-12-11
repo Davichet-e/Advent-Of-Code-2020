@@ -44,11 +44,11 @@ pub fn day_11() -> io::Result<()> {
             >= 4
     };
 
-    let iteration_1: Box<dyn Fn((usize, Seat, &[Seat])) -> Seat> =
-        Box::new(|(i, seat, matrix): (usize, Seat, &[Seat])| match seat {
+    let iteration_1: Box<dyn Fn((usize, &Seat, &[Seat])) -> Seat> =
+        Box::new(|(i, seat, matrix)| match seat {
             Seat::FREE if not_occupied(i, matrix) => Seat::OCCUPIED,
             Seat::OCCUPIED if crowded_1(i, matrix) => Seat::FREE,
-            _ => seat,
+            _ => *seat,
         });
 
     // Part 2
@@ -89,17 +89,16 @@ pub fn day_11() -> io::Result<()> {
             && (seat_not_occupied_direction(index as i32, matrix, Direction::RIGHT))
     };
 
-    let iteration_2: Box<dyn Fn((usize, Seat, &[Seat])) -> Seat> =
-        Box::new(|(i, seat, matrix): (usize, Seat, &[Seat])| match seat {
+    let iteration_2: Box<dyn Fn((usize, &Seat, &[Seat])) -> Seat> =
+        Box::new(|(i, seat, matrix)| match seat {
             Seat::FREE if not_occupied_2(i, matrix) => Seat::OCCUPIED,
             Seat::OCCUPIED if crowded_2(i, matrix) => Seat::FREE,
-            _ => seat,
+            _ => *seat,
         });
 
-    for iteration in [iteration_1, iteration_2].iter() {
+    for (i, iteration) in [iteration_1, iteration_2].iter().enumerate() {
         let mut prev_iter: Vec<Seat> = matrix
             .iter()
-            .cloned()
             .enumerate()
             .map(|(i, s)| iteration((i, s, &matrix)))
             .collect::<Vec<_>>();
@@ -108,7 +107,7 @@ pub fn day_11() -> io::Result<()> {
             let new_iter: Vec<Seat> = prev_iter
                 .iter()
                 .enumerate()
-                .map(|(i, seat)| iteration((i, seat.clone(), &prev_iter)))
+                .map(|(i, seat)| iteration((i, seat, &prev_iter)))
                 .collect::<Vec<_>>();
             if prev_iter == new_iter {
                 break new_iter;
@@ -116,18 +115,21 @@ pub fn day_11() -> io::Result<()> {
                 prev_iter = new_iter;
             }
         };
-        println!(
-            "{}",
-            not_changing
-                .iter()
-                .filter(|seat| matches!(seat, Seat::OCCUPIED))
-                .count()
-        );
+
+        let n_of_occupies = not_changing
+            .iter()
+            .filter(|seat| matches!(seat, Seat::OCCUPIED))
+            .count();
+        if i == 0 {
+            println!("Day 11\nPart 1: {}", n_of_occupies);
+        } else {
+            println!("Part 2: {}\n", n_of_occupies);
+        }
     }
     Ok(())
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Copy)]
 enum Seat {
     FREE,
     FLOOR,
