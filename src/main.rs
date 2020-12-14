@@ -3,6 +3,7 @@ mod day_10;
 mod day_11;
 mod day_12;
 mod day_13;
+mod day_14;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -37,6 +38,7 @@ fn main() -> std::io::Result<()> {
             day_11::day_11()?;
             day_12::day_12()?;
             day_13::day_13()?;
+            day_14::day_14()?;
         }
     };
     Ok(())
