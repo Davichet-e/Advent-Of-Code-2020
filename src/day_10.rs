@@ -12,7 +12,7 @@ pub fn day_10() -> io::Result<()> {
             .filter_map(|l| l.map(|l| l.parse().unwrap()).ok())
             .collect();
         numbers.push(0);
-        numbers.sort();
+        numbers.sort_unstable();
         numbers.push(numbers.last().unwrap() + 3);
         numbers
     };

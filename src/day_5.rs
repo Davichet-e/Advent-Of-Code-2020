@@ -12,7 +12,7 @@ pub fn day_5() -> io::Result<()> {
         .lines()
         .map(|l| Seat::new(&l.unwrap()).id())
         .collect();
-    ids.sort();
+    ids.sort_unstable();
 
     // Part 1
     println!("Day 5\nPart 1: {:?}", ids.last().unwrap());
