@@ -40,12 +40,10 @@ fn solve(
     memory.reserve(nth / 8);
 
     (length + 1..=nth).fold(last_value, |n, i| {
-        let v = if let Some(v) = memory.get(&n) {
+        if let Some(v) = memory.insert(n, i - 1) {
             i - 1 - v
         } else {
             0
-        };
-        memory.insert(n, i - 1);
-        v
+        }
     })
 }
