@@ -39,9 +39,9 @@ fn solve(
     let mut memory = initial_turns.clone();
     memory.reserve(nth / 8);
 
-    (length + 1..=nth).fold(last_value, |n, i| {
-        if let Some(v) = memory.insert(n, i - 1) {
-            i - 1 - v
+    (length..nth).fold(last_value, |n, i| {
+        if let Some(v) = memory.insert(n, i) {
+            i - v
         } else {
             0
         }
