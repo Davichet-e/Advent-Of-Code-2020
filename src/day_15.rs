@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::{fs, io};
 
+#[allow(dead_code)]
 pub fn day_15() -> io::Result<()> {
     let input: Vec<usize> = fs::read_to_string("inputs/day_15")?
         .split(',')
