@@ -21,7 +21,7 @@ type Coordinate = (i8, i8, i8, i8);
 
 fn parse_input(lines: &[String]) -> HashSet<Coordinate> {
     lines
-        .into_iter()
+        .iter()
         .enumerate()
         .flat_map(|(x, line)| {
             line.chars().enumerate().filter_map(move |(y, c)| {
@@ -53,10 +53,8 @@ fn step(four_dim: bool, state: &HashSet<Coordinate>) -> HashSet<Coordinate> {
                                 *memory.entry((x + dx, y + dy, z + dz, w + dw)).or_insert(0) += 1;
                             }
                         }
-                    } else {
-                        if !(dx == 0 && dy == 0 && dz == 0) {
-                            *memory.entry((x + dx, y + dy, z + dz, 0)).or_insert(0) += 1;
-                        }
+                    } else if !(dx == 0 && dy == 0 && dz == 0) {
+                        *memory.entry((x + dx, y + dy, z + dz, 0)).or_insert(0) += 1;
                     }
                 }
             }

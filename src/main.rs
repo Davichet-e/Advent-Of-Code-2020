@@ -66,7 +66,7 @@ fn create_day_aoc(type_file: &str) -> std::io::Result<()> {
     let content = match type_file {
         "lines" => format!(
             r#"use std::fs::File;
-use std::io::{{self, prelude::BufRead, BufReader}};
+use std::io::{{self, BufRead, BufReader}};
 
 #[allow(dead_code)]
 pub fn {day}() -> io::Result<()> {{

@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
-use std::io::{self, prelude::BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 
 #[allow(dead_code)]
 pub fn day_10() -> io::Result<()> {

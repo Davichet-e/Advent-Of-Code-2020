@@ -45,13 +45,13 @@ pub fn day_11() -> io::Result<()> {
             + (!seat_not_occupied(index + &UP_LEFT, matrix)) as u8
             >= 4
     };
+    type A<'a> = (usize, &'a Seat, &'a [Seat]);
 
-    let iteration_1: Box<dyn Fn((usize, &Seat, &[Seat])) -> Seat> =
-        Box::new(|(i, seat, matrix)| match seat {
-            Seat::FREE if not_occupied(i, matrix) => Seat::OCCUPIED,
-            Seat::OCCUPIED if crowded_1(i, matrix) => Seat::FREE,
-            _ => *seat,
-        });
+    let iteration_1: Box<dyn Fn(A) -> Seat> = Box::new(|(i, seat, matrix)| match seat {
+        Seat::FREE if not_occupied(i, matrix) => Seat::OCCUPIED,
+        Seat::OCCUPIED if crowded_1(i, matrix) => Seat::FREE,
+        _ => *seat,
+    });
 
     // Part 2
     let seat_not_occupied_2 = |index: usize, matrix: &[Seat], direction: Direction| {
@@ -94,12 +94,11 @@ pub fn day_11() -> io::Result<()> {
             && (seat_not_occupied_2(index, matrix, RIGHT))
     };
 
-    let iteration_2: Box<dyn Fn((usize, &Seat, &[Seat])) -> Seat> =
-        Box::new(|(i, seat, matrix)| match seat {
-            Seat::FREE if not_occupied_2(i, matrix) => Seat::OCCUPIED,
-            Seat::OCCUPIED if crowded_2(i, matrix) => Seat::FREE,
-            _ => *seat,
-        });
+    let iteration_2: Box<dyn Fn(A) -> Seat> = Box::new(|(i, seat, matrix)| match seat {
+        Seat::FREE if not_occupied_2(i, matrix) => Seat::OCCUPIED,
+        Seat::OCCUPIED if crowded_2(i, matrix) => Seat::FREE,
+        _ => *seat,
+    });
 
     for (i, iteration) in [iteration_1, iteration_2].iter().enumerate() {
         let mut prev_iter: Vec<Seat> = matrix

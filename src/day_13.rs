@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{self, prelude::BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 
 fn find_inverse(ni: u64, modulo: u64) -> u64 {
     (1..).find(|n| (n * ni) % modulo == 1).unwrap()

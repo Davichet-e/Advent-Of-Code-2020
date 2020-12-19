@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 use std::fs::File;
-use std::io::{self, prelude::BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 
 #[allow(dead_code)]
 pub fn day_18() -> io::Result<()> {
@@ -23,6 +23,14 @@ enum Operation {
 }
 
 impl Operation {
+    fn from_char(ch: char) -> Self {
+        if ch == '+' {
+            Operation::Add
+        } else {
+            Operation::Multiply
+        }
+    }
+
     fn operate(&self, lhs: u64, rhs: u64) -> u64 {
         if let Operation::Add = self {
             lhs + rhs
@@ -46,23 +54,19 @@ fn part_1(lines: &[String]) -> u64 {
                         let last = stack.back_mut().unwrap();
                         match ch {
                             '(' => {
-                                let op = last.1;
-                                stack.push_back((0, op));
+                                stack.push_back((0, Operation::Add));
                             }
-                            c if c == '+' => last.1 = Operation::Add,
-
-                            c if c == '*' => last.1 = Operation::Multiply,
-
                             c if c.is_ascii_digit() => {
-                                last.0 = last.1.operate(last.0, c.to_digit(10).unwrap() as u64)
+                                last.0 = last.1.operate(last.0, c.to_digit(10).unwrap() as u64);
                             }
                             ')' => {
                                 let d = stack.pop_back().unwrap().0;
 
                                 let last = stack.back_mut().unwrap();
-                                *last = (last.1.operate(last.0, d), last.1);
+                                last.0 = last.1.operate(last.0, d);
                             }
-                            _ => (),
+                            ' ' => (),
+                            ch => last.1 = Operation::from_char(ch),
                         }
                         stack
                     },
@@ -108,12 +112,10 @@ fn part_2(lines: &[String]) -> u64 {
                                         last.0 *= *n;
                                         *n = digit;
                                     }
+                                } else if let Operation::Add = last.1 {
+                                    last.0 += digit;
                                 } else {
-                                    if let Operation::Add = last.1 {
-                                        last.0 += digit;
-                                    } else {
-                                        last.2 = Some(digit);
-                                    }
+                                    last.2 = Some(digit);
                                 }
                             }
                             ')' => {
@@ -123,13 +125,11 @@ fn part_2(lines: &[String]) -> u64 {
                                 }
                                 let last = stack.back_mut().unwrap();
                                 if let Operation::Multiply = last.1 {
-                                    *last = (last.0, last.1, Some(d.0));
+                                    last.2 = Some(d.0);
+                                } else if let Some(n) = last.2 {
+                                    last.2 = Some(n + d.0);
                                 } else {
-                                    if let Some(n) = last.2 {
-                                        *last = (last.0, last.1, Some(n + d.0));
-                                    } else {
-                                        *last = (last.0 + d.0, last.1, last.2);
-                                    }
+                                    last.0 = last.0 + d.0;
                                 }
                             }
                             _ => (),

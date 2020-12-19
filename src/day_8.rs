@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use std::fs::File;
-use std::io::{self, prelude::BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 use std::str::FromStr;
 
 #[allow(dead_code)]
