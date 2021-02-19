@@ -85,10 +85,7 @@ fn part_2(lines: &[String]) -> u64 {
             match l
                 .chars()
                 .fold(
-                    [(0, Operation::Add, None)]
-                        .iter()
-                        .copied()
-                        .collect::<VecDeque<(u64, Operation, Option<u64>)>>(),
+                    VecDeque::from(vec![(0u64, Operation::Add, Option::<u64>::None)]),
                     |mut stack, ch| {
                         let last = stack.back_mut().unwrap();
                         match ch {
@@ -129,7 +126,7 @@ fn part_2(lines: &[String]) -> u64 {
                                 } else if let Some(n) = last.2 {
                                     last.2 = Some(n + d.0);
                                 } else {
-                                    last.0 = last.0 + d.0;
+                                    last.0 += d.0;
                                 }
                             }
                             _ => (),
